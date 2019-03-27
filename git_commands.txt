@@ -1,0 +1,13 @@
+запустить через контекстное меню в папке Git Bach Here
+
+- gitk --all& (открыть окно управления версиями)
+- ctrl + insert (копировать код версии)
+- git-checkout [shift+insert]
+
+
+- git clone [url] (скачать проект с github)
+- git commit (подготовить к заливке)
+
+- git pull (скачать изменения)
+- git push (залить изменения)
+
