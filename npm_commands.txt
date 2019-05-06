@@ -1,3 +1,6 @@
 
 - npm install (установаить необходимые пакеты из package-json)
 - npm start (запустить проект)
+
+- npm i = npm install
+- npm i название пакета -save (установить пакет и прописать его в package.json проекта)
