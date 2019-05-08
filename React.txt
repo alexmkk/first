@@ -49,3 +49,41 @@ componentDidMount() {
       })
   }
 }
+===========================================
+--- егЪШ ---
+import React, {useState, useContext, useEffect} from 'react'
+export default function Greeting(props) {
+  const [name, setName] = useState('Mary')
+  const theme = useContext(ThemeContext)
+  const locale = useContext(LocaleContext)
+}
+useEffect(() => {
+  document.title = name + ' ' + surname
+})
+
+***
+const [width, setWidth] = useState(windows.innerWidth);
+useEffect( () => {
+  const handleResize = () => setWidth(windows.innerWidth)
+  window.addEventListener('resize', handleResize);
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  }
+})
+
+***
+const name = useFormInput('Mary')
+const surname = useFormInput('Poppins')
+
+<input {...name} />
+
+function useFormInput(initialValue) {
+  const [value, setValue] = useState(initialValue)
+  function handleChange(e) {
+    setValue(e.target.value)
+  }
+  return {
+    value,
+    onChange: handleChange
+  }
+}
