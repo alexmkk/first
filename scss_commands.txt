@@ -1,0 +1,62 @@
+scss - препроцессор CSS
+
+* комментарий обозначеется //
+* .block:not(.first) - блоки с классом block и без класса first
+* $bgColor: #fafafa - переменная
+   body { background: $bgColor }
+* Миксин - шаблон для использования в блоках
+   @mixin FONT {color: blue;}
+Подключение: a { @include FONT }
+Можно в миксинах использовать переменные.
+__________________________
+Передача параметров в мИксин:
+   @mixin FONT ($color, $fWeight) {
+      color: $color;
+      font-weight: $fWeight;  
+    }
+
+   a {
+     @include FONT(#333, bold)
+   } 
+__________________________
+Значение по умолчанию:
+@mixin font ($fontW, $color: red) {}
+@include font (bold)
+__________________________
+Передача нескольких параметров:
+@mixin padd($padd...) {
+  padding: $padd
+}
+div {
+  @include padd(20px) или @include padd(20px 10px)
+}
+__________________________
+Псевдоклассы
+a {
+  color: red;
+  &:hover {
+    color: blue;
+  }
+}
+__________________________
+Импорт файлов
+В файле style.scss импортируем: @import "variables"; - при этом файл variables.scss в той же папке
+__________________________
+Математические операции
+width: (100% / 4);
+__________________________
+Функции
+https://sass-lang.com/documentation/functions
+color: darker(silver, 20) - затемняет цвет на 20%
+__________________________
+Условия, циклы и оператор @content
+
+@mixin grid ($cols, $margin) {
+  @if($cols >= 5) {
+    width: 100%;
+    margin-right:0;  
+  }
+  @else {
+    width: ((100% - (($cols-1) * $margin)) / $cols);
+  }
+}
