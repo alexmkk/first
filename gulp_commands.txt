@@ -1,0 +1,96 @@
+Gulp JS - task менеджер для оптимизации рутиных задач
+
+* npm install --global gulp-cli -установить gulp
+* npm init -создание файла package-json с описанием проекта и зависимостями
+* npm install --save-dev gulp -установка проекта на основе файла package-json + плагина gulp, если зависимостей нет, то устанавливаются стандартные модули node js
+* gulp --version -проверить версию gulp
+__________________________________________
+gulpfile.js:
+
+function defaultSomeTask (done) {
+  console.log("All is working!");
+  done();
+}
+export.default = defaultSomeTask;
+
+=> команда в терминале gulp выведет "All is working!"
+или
+function printHello(done) {
+  console.log("Hello!");
+  done();
+}
+export.printHello = printHello;
+
+=> команда в терминале gulp printHello выведет "Hello!"
+
+__________________________________________
+scss/style.scss :
+
+body {
+  color: red;
+  h1 {
+    font-weight:bold;
+  }
+}
+
+gulpfile.js в корневой папке:
+
+//установить rename: npm install --save-dev gulp-rename
+//установить sass: npm install --save-dev gulp-sass
+
+var gulp = require('gulp');
+var rename = require('gulp-rename');
+var sass = require('gulp-sass');
+
+gulp.task(printHello); -задача выполнить printHello
+gulp.task('default', defaultSomeTask); -задача выполнить по умолчанию (вместо exports.default = defaultSomeTask)
+
+Для преобразования scss в css:
+function css_style(done) {
+  gulp.src('./scss/style.scss')
+    .pipe(sass({
+      errorLogToConsole: true //отлов ошибок при преобразовании из sass,
+      outputStyle: 'compressed' //сжимаем файл
+    }))
+    .on('error', console.error.bind(console)) //вывод ошибок в консоль
+    .pipe( rename( {suffix: '.min'} ) )    -добавит преффикс .min
+    .pipe( gulp.dest('./css/') ) -скопирует в папку css/style.min.css
+  // (pipe() -выполнение задачи, ТОЛЬКО после успешного выполнения предыдущей задачи)
+}
+gulp.task(copy);
+_________________________________________
+
+* Автопрефиксы необходимы, например, при использовании свойства
+transition
+npm install --save-dev gulp-autoprefixer //установка плагина автопреффикса
+
+var autoprefixer = require('gulp-autoprefixer');
+... .pipe(autoprefixer({
+      browsers: ['last 2 versions'], //устанавливаем поддержку браузера
+      cascade: false
+    }))
+
+* Source Maps позволяет просматривать минифицированный однострочный файл в читабельном режиме в браузере
+npm install --save-dev gulp-sourcemaps
+
+var sourcemaps = require('gulp-sourcemaps');
+... .pipe(sourcemaps.init()) //инициализируем в самом начале команд
+... .pipe(sourcemaps.write('./')) //записываем данные в файл в той же папке
+_________________________________________
+Выполнение нескольких задач:
+вместо:
+  gulp.task(css_style);
+  gulp.task(print);
+пишем:
+  gulp.task('default', gulp.series(css_style, print));
+
+* Watch
+watch задачи выполняются постоянно, task задачи выполняются единоразово
+watch отслеживает изменение в файлах и выполняют заданную функции в случае изменений
+
+function watchSass() {
+  gulp.watch("./scss/**/*", css_style) -указываем отслеживаемые файлы и выполняемую функцию (** - обозначают, что берутся все папки, * - берутся все файлы) 
+  так же заменим копирование файла вместо: gulp.src('./scss/style.scss') => gulp.src('./scss/**/*.scss')
+
+Добавим вызов watchSass : gulp.task('default', watchSass)
+Чтобы выйти из watch таска нажимаем в командной строке Ctrl + C
