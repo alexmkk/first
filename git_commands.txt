@@ -2,7 +2,7 @@
 
 - gitk --all& (открыть окно управления версиями)
 - ctrl + insert (копировать код версии)
-- git-checkout [shift+insert]
+- git checkout [shift+insert]
 
 - git status - проверка состояний
 - git diff - просмотр изменений
